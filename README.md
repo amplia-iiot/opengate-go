@@ -139,14 +139,6 @@ https://github.com/<your-github-username>/opengate-go
 
 Before submitting, please run linters/formatters as applicable and include tests when adding behavior.
 
----
-
-## License
-
-This project is licensed under the MIT License — see the `LICENSE` file for details.
-
----
-
 ## Disclaimer
 
 This project is not officially affiliated with Amplía Soluciones S.L. or the OpenGate platform. It is an independent open-source client library.
