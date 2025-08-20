@@ -23,9 +23,18 @@ func ReadAllModels(f embed.FS) error {
 	setEmbedFiles(f)
 	return readAllModels()
 }
-//alternativa a ReadAllModels. Aqui tu le pasas todos los modelos ya cargados
+
+// alternativa a ReadAllModels. Aqui tu le pasas todos los modelos ya cargados
 func SetModels(models []ModelOG) {
 	matcher = models
+}
+func AppendModel(newModel ModelOG) {
+	for _, model := range matcher {
+		if model.ModelName == newModel.ModelName {
+			return
+		}
+	}
+	matcher = append(matcher, newModel)
 }
 
 // func ReadAllModels(models map[string]interface{})
