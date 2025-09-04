@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/amplia-iiot/opengate-go/http_client"
-	"github.com/amplia-iiot/opengate-go/logger"
 	"github.com/amplia-iiot/opengate-go/odm_model"
+	"github.com/amplia-iiot/opengate-go/logger"
 )
 
 // para distinguir entre un valor complejo que dentro lleva un array con un valor complejo normal
@@ -77,7 +77,6 @@ func NewNormalizer() *Normalizer {
 	return &Normalizer{}
 }
 func NewCollectIoTGrouped(collected []CollectInfo, device string, path []string, byAlias bool) (collects []odm_model.CollectIot) {
-	logger.Warn("collected (1): ", collected[0].FieldValue)
 	var grouped map[string][]CollectInfo = make(map[string][]CollectInfo)
 	for _, coll := range collected {
 		grouped[coll.FieldName] = append(grouped[coll.FieldName], coll)
@@ -93,9 +92,7 @@ func NewCollectIoTGrouped(collected []CollectInfo, device string, path []string,
 					dataPoints = append(dataPoints, dataStream.Datapoints...)
 				}
 			} else {
-				logger.Warn("Pasando por simpleDS")
 				if dataStream := GetSimpleDS(collInfo); dataStream != nil {
-					logger.Warn(fmt.Sprintf("dataStream dentro de simpleDS: %v", dataStream.Datapoints[0].Value))
 					ogDataStream = dataStream.Id
 					dataPoints = append(dataPoints, dataStream.Datapoints...)
 				}
@@ -168,7 +165,6 @@ func GetSimpleDSByAlias(c CollectInfo) *odm_model.CollectDatastream {
 	return nil
 }
 func GetSimpleDS(c CollectInfo) *odm_model.CollectDatastream {
-	logger.Warn("dentro de GETSimpleDSSSS!")
 	var dataStream *odm_model.CollectDatastream = &odm_model.CollectDatastream{}
 	if relation := GetRelation(c.FieldName, c.ModelName); relation != nil {
 		var dataPoint odm_model.Datapoint
@@ -182,7 +178,6 @@ func GetSimpleDS(c CollectInfo) *odm_model.CollectDatastream {
 			}
 			dataPoint.Value = dpValue
 		} else if ogValue := relation.GetValueInRelation(c.FieldValue); ogValue != nil {
-			logger.Warn(fmt.Sprintf("encontramos valor dentro de ogValue: %v", ogValue))
 			dataPoint.Value = ogValue
 		} else {
 			return nil
