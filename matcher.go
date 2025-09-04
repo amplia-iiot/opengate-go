@@ -284,6 +284,7 @@ func (r *Relation) GetValueInRelation(inputValue string) interface{} {
 	return r.getConvertedValue(inputValue)
 }
 func (r *Relation) getConvertedValue(inputValue string) interface{} {
+	logger.Warn("getConvertedValue para value: ", inputValue)
 	switch r.DataType {
 	case "boolean":
 		if boolValue, err := strconv.ParseBool(inputValue); err == nil {
@@ -294,9 +295,17 @@ func (r *Relation) getConvertedValue(inputValue string) interface{} {
 			return i
 		}
 	case "number": //viene un entero en un string y hay que pasarlo a float. Ej: "12" --> 12
+		logger.Warn("entramos en number ", inputValue)
+		if _, err := strconv.ParseFloat(inputValue, 64); err != nil {
+			logger.Warn(fmt.Sprintf("error!!!: %v", err))
+		}
 		if inputNumberFloat, err := strconv.ParseFloat(inputValue, 64); err == nil {
+			logger.Warn("entramos en inputNumberFloat ", inputValue)
 			if r.Factor == "" {
 				r.Factor = "1"
+			}
+			if _, err1 := strconv.ParseFloat(r.Factor, 64); err1 != nil {
+				logger.Warn(fmt.Sprintf("error!!!: %v", err1))
 			}
 			if factor, _ := strconv.ParseFloat(r.Factor, 64); factor != 0 {
 				return utils.FloatToFixed(inputNumberFloat*factor, 2)
