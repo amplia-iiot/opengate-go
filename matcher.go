@@ -278,7 +278,7 @@ func (r *Relation) BuildMapJsonElementInSub(deviceFieldName, deviceValue string,
 	}
 }
 func (r *Relation) GetValueInRelation(inputValue string) interface{} {
-	if r.Enums != nil {
+	if len(r.Enums) != 0 {
 		return r.getEnumValue(r.Enums, inputValue)
 	}
 	return r.getConvertedValue(inputValue)
